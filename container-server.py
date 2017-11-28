@@ -193,7 +193,7 @@ def docker(*args):
         cmd.append(sub)
     process = Popen(cmd, stdout=PIPE, stderr=PIPE)
     stdout, stderr = process.communicate()
-    if stderr.startswith('Error'):
+    if stderr.startswith(b'Error'):
         print 'Error: {0} -> {1}'.format(' '.join(cmd), stderr)
     return stderr + stdout
 
@@ -208,10 +208,10 @@ def docker_ps_to_array(output):
     all = []
     for c in [line.split() for line in output.splitlines()[1:]]:
         each = {}
-        each['id'] = c[0]
-        each['image'] = c[1]
-        each['name'] = c[-1]
-        each['ports'] = c[-2]
+        each['id'] = c[0].decode('utf-8')
+        each['image'] = c[1].decode('utf-8')
+        each['name'] = c[-1].decode('utf-8')
+        each['ports'] = c[-2].decode('utf-8')
         all.append(each)
     return all
 
@@ -234,9 +234,9 @@ def docker_images_to_array(output):
     all = []
     for c in [line.split() for line in output.splitlines()[1:]]:
         each = {}
-        each['id'] = c[2]
-        each['tag'] = c[1]
-        each['name'] = c[0]
+        each['id'] = c[2].decode('utf-8')
+        each['tag'] = c[1].decode('utf-8')
+        each['name'] = c[0].decode('utf-8')
         all.append(each)
     return all
 
